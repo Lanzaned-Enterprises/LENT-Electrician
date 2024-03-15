@@ -1,4 +1,4 @@
-# LENT-PizzaThis
+# LENT-ElectricianJob
 *Are you tired of those pesky electical failures? Have you experienced them first hand? Would you like to fight against them? Well you're in luck! The Department of Water & Power is now hiring talented individuals & Groups to work for them! Going around the state to fix all sorts of electrical issues!*
 
 ## Dependencies
