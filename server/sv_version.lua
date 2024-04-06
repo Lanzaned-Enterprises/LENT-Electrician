@@ -1,5 +1,5 @@
 --[[ Version Checker ]] --
-local version = "200"
+local version = "300"
 
 local DISCORD_WEBHOOK = ""
 local DISCORD_NAME = "LENT - Electrician Job"

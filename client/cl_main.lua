@@ -34,10 +34,6 @@ RegisterNetEvent('QBCore:Client:OnJobUpdate', function()
     PlayerJob = QBCore.Functions.GetPlayerData().job
 end)
 
-RegisterNetEvent('LENT-Electrician:Client:SendNotify', function(text, type, time)
-    Notify('cl', text, type, time)
-end)
-
 RegisterNetEvent('LENT-Electrician:Client:CreateJob', function()
     local VehicleHash = `burrito`
     QBCore.Functions.LoadModel(VehicleHash)
@@ -102,7 +98,7 @@ end)
 RegisterNetEvent('LENT-Electrical:Client:SendJob', function()
     if IsOnJob then
         JobsDone = JobsDone + 1
-        Notify("cl", 'You\'ve completed: ' .. JobsDone .. ' box repairs', "success", 2500)
+        exports['LENT-Library']:SendNotification('You\'ve completed: ' .. JobsDone .. ' box repairs', "success", 2500)
         RemoveBlip(ElectricianBlip)
         Wait(2500)
         TriggerServerEvent('LENT-Electrician:Server:FixElectricalBox')
@@ -115,9 +111,9 @@ RegisterNetEvent('LENT-Electrician:Client:GetPaySlip', function()
     if JobsDone > 0 then
         TriggerServerEvent("LENT-Electrician:Server:ReturnVehicle", JobsDone)
         JobsDone = 0
-        
     else
-        Notify('client', "You haven't done any work yet!", 'error')
+        exports['LENT-Library']:SendNotification("You haven't done any work yet!", 'error')
+        TriggerServerEvent("LENT-Electrician:Server:ReturnVehicle", JobsDone)
     end
 end)
 
@@ -156,48 +152,6 @@ RegisterNetEvent('LENT-Electrician:Client:DrawWaypoint', function(coords)
     SetBlipRoute(ElectricianBlip, true)
     SetBlipRouteColour(ElectricianBlip, 5)
 end)
-
-RegisterNetEvent('LENT-Electrician:Client:SendPhone', function(event, Sender, Subject, Message)
-    if event == 'email' then
-        SendPhoneEmail(Sender, Subject, Message)
-    end
-end)
-
--- [[ Functions ]] --
-function SendPhoneEmail(Sender, Subject, Message)
-    local C = Config.QBCoreSettings['Phone']
-    if C == 'qb' then
-        TriggerServerEvent('qb-phone:server:sendNewMail', {
-            sender = Sender,
-            subject = Subject,
-            message = Message,
-        })
-    elseif C == 'gks' then
-        local MailData = {
-            sender = Sender,
-            image = '/html/static/img/icons/mail.png',
-            subject = Subject,
-            message = Message
-          }
-          exports["gksphone"]:SendNewMail(MailData)
-    elseif C == 'qs' then
-        TriggerServerEvent('qs-smartphone:server:sendNewMail', {
-            sender = Sender,
-            subject = Subject,
-            message = Message,
-        })
-    elseif C == 'npwd' then
-        exports["npwd"]:createNotification({
-            notisId = "LENT:EMAIL",
-            appId = "EMAIL",
-            content = Message,
-            secondaryTitle = Sender,
-            keepOpen = false,
-            duration = 5000,
-            path = "/email",
-        })
-    end
-end
 
 -- [[ Threads ]] --
 CreateThread(function()

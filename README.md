@@ -2,6 +2,7 @@
 *Are you tired of those pesky electical failures? Have you experienced them first hand? Would you like to fight against them? Well you're in luck! The Department of Water & Power is now hiring talented individuals & Groups to work for them! Going around the state to fix all sorts of electrical issues!*
 
 ## Dependencies
+- [LENT-Library](https://github.com/Lanzaned-Enterprises/LENT-Library) ***(REQUIRED)***
 - [Renewed-Banking](github.com/Renewed-Scripts/Renewed-Banking/releases) (optional)
 
 ## How To Install!

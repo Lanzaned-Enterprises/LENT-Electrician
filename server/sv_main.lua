@@ -14,7 +14,7 @@ RegisterServerEvent('LENT-Electrician:Server:CreateJob', function()
         if Player.PlayerData.job.name == Config.ResourceSettings['Job']['JobName'] then
             TriggerEvent('LENT-Electrician:Server:StartJob', src)
         else
-            Notify('sv', 'You are not employed as Electrician', 'error')
+            exports['LENT-Library']:ServerNotification('You are not employed as Electrician', 'error')
         end
     else
         TriggerEvent('LENT-Electrician:Server:StartJob', src)
@@ -92,38 +92,40 @@ RegisterNetEvent('LENT-Electrician:Server:GetPayment', function(source, JobsDone
     if Jobs[QBCore.Functions.GetPlayer(src).PlayerData.citizenid] ~= nil then
         JobsDone = tonumber(JobsDone)
 
-        local bonus = 0
-        local pay = Jobs[QBCore.Functions.GetPlayer(src).PlayerData.citizenid]['Payment']
+        if JobsDone > 0 then
+            local bonus = 0
+            local pay = Jobs[QBCore.Functions.GetPlayer(src).PlayerData.citizenid]['Payment']
 
-        if JobsDone > 5 then
-            bonus = math.ceil((pay / 10) * 5)
-        elseif JobsDone > 10 then
-            bonus = math.ceil((pay / 10) * 7)
-        elseif JobsDone > 15 then
-            bonus = math.ceil((pay / 10) * 10)
-        elseif JobsDone > 20 then
-            bonus = math.ceil((pay / 10) * 12)
-        end
-
-        local check = bonus + pay
-
-        local Player = QBCore.Functions.GetPlayer(src)
-        if Config.ResourceSettings['Payment']['Type'] == 'bank' then
-            if Config.QBCoreSettings['Renewed-Banking'] then
-                local cid = Player.PlayerData.citizenid
-                local title = 'San Andreas Power & Water - Salary'
-                local name = ('%s %s'):format(Player.PlayerData.charinfo.firstname, Player.PlayerData.charinfo.lastname)
-                local txt = 'Received Pay for working for SADWP'
-                local issuer = 'Stevan Powel @ San Andreas Department of Water & Power'
-                -- [[ ^ Reference to: Steven Powell CEO of Southern California Edison ]]
-                local reciver = name
-                local type = 'deposit'
-                exports['Renewed-Banking']:handleTransaction(cid, title, check, txt, issuer, reciver, type)
+            if JobsDone > 5 then
+                bonus = math.ceil((pay / 10) * 5)
+            elseif JobsDone > 10 then
+                bonus = math.ceil((pay / 10) * 7)
+            elseif JobsDone > 15 then
+                bonus = math.ceil((pay / 10) * 10)
+            elseif JobsDone > 20 then
+                bonus = math.ceil((pay / 10) * 12)
             end
 
-            Player.Functions.AddMoney('bank', check, 'Electrician Job')
-        else
-            Player.Functions.AddMoney('cash', check, 'Electrician Job')
+            local check = bonus + pay
+
+            local Player = QBCore.Functions.GetPlayer(src)
+            if Config.ResourceSettings['Payment']['Type'] == 'bank' then
+                if Config.QBCoreSettings['Renewed-Banking'] then
+                    local cid = Player.PlayerData.citizenid
+                    local title = 'San Andreas Power & Water - Salary'
+                    local name = ('%s %s'):format(Player.PlayerData.charinfo.firstname, Player.PlayerData.charinfo.lastname)
+                    local txt = 'Received Pay for working for SADWP'
+                    local issuer = 'Stevan Powel @ San Andreas Department of Water & Power'
+                    -- [[ ^ Reference to: Steven Powell CEO of Southern California Edison ]]
+                    local reciver = name
+                    local type = 'deposit'
+                    exports['Renewed-Banking']:handleTransaction(cid, title, check, txt, issuer, reciver, type)
+                end
+
+                Player.Functions.AddMoney('bank', check, 'Electrician Job')
+            else
+                Player.Functions.AddMoney('cash', check, 'Electrician Job')
+            end
         end
         Jobs[QBCore.Functions.GetPlayer(src).PlayerData.citizenid] = nil
     end
