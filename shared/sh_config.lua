@@ -5,9 +5,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 Config = Config or {}
 
 Config.QBCoreSettings = {
-    ['Notify'] = 'qb', -- qb, ps, custom
     ['Fuel'] = 'cdn-fuel', -- Fuel Resource Name
-    ['Phone'] = 'qb', -- qb, gks, qs, npwd
     ['Renewed-Banking'] = true, -- If Bank is true it will generate transactions
 }
 
@@ -92,27 +90,10 @@ function Config.PerformHack()
         }, {}, {}, {}, function() -- Play When Done
             ExecuteCommand('e c')
             TriggerEvent('LENT-Electrical:Client:SendJob')
-            Notify('cl', 'You fixed this box!', 'success')
+            exports['LENT-Library']:SendNotification('You fixed this box!', 'success')
         end, function() -- Play When Cancel
             ExecuteCommand('e c')
-            Notify('cl', 'You cancelled the progress', 'error')
+            exports['LENT-Library']:SendNotification('You cancelled the progress', 'error')
         end)
-    end
-end
-
-function Notify(clsv, text, type, time)
-    if clsv == 'client' or clsv == "cl" then
-        if Config.QBCoreSettings['Notify'] == 'qb' then
-            QBCore.Functions.Notify(text, type, time)
-        elseif Config.QBCoreSettings['Notify'] == 'ps' then
-            exports['ps-ui']:Notify(text, type, time)
-        elseif Config.QBCoreSettings['Notify'] == 'custom' then
-            -- Create Custom Notify
-        end
-    elseif clsv == 'server' or clsv == "sv" then
-        local src = source
-        TriggerClientEvent('LENT-Electrician:Client:SendNotify', src, text, type, time)
-    else
-        print('A invalid setting was parsed!')
     end
 end
