@@ -4,6 +4,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 -- [[ Variables ]] --
 local Jobs = {}
 local NewPayment
+
 -- [[ Resource Metadata ]] --
 
 
@@ -155,3 +156,8 @@ end
 
 
 -- [[ Other ]] --
+QBCore.Functions.CreateUsableItem(Config.ResourceSettings['RequiredItem'], function(source, item)
+    local P = QBCore.Functions.GetPlayer(source)
+    if not P.Functions.GetItemByName(item.name) then return end
+    -- This will be coming soon
+end)

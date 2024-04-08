@@ -14,6 +14,7 @@ Config.ResourceSettings = {
         ['Required'] = false,
         ['JobName'] = 'electrician',
         ['ProgressTime'] = math.random(2500, 5000), -- In MS
+        ['RequiredItem'] = "welder",
     },
     ['JobLocation'] = {
         ['Ped'] = {
